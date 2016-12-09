@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Generate cron wrapper to set correct environment variables
+cat > /var/www/apps/asteroidday/cronwrapper << EOF
+export PYTHONPATH="${PYTHONPATH}"
+export DJANGO_SETTINGS_MODULE="${DJANGO_SETTINGS_MODULE}"
+
+export ASTEROIDDAY_DB_NAME="${ASTEROIDDAY_DB_NAME}"
+export ASTEROIDDAY_DB_HOST="${ASTEROIDDAY_DB_HOST}"
+export ASTEROIDDAY_DB_USER="${ASTEROIDDAY_DB_USER}"
+export ASTEROIDDAY_DB_PASSWD="${ASTEROIDDAY_DB_PASSWD}"
+export ASTEROIDDAY_API_USER="${ASTEROIDDAY_API_USER}"
+export ASTEROIDDAY_API_PASSWD="${ASTEROIDDAY_API_PASSWD}"
+export ASTEROIDDAY_EMAIL_USERNAME="${ASTEROIDDAY_EMAIL_USERNAME}"
+export ASTEROIDDAY_EMAIL_PASSWORD="${ASTEROIDDAY_EMAIL_PASSWORD}"
+
+EOF
+
+# Make cron wrapper executable
+chmod +x /var/www/apps/asteroidday/cronwrapper
+
+# Setup the LCOGT Asteroid day webapp
+python /var/www/apps/asteroidday/manage.py migrate --noinput
+python /var/www/apps/asteroidday/manage.py collectstatic --noinput
+
+# Run under supervisord
+exec /usr/bin/supervisord -n -c /etc/supervisord.conf

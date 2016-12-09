@@ -1,0 +1,6 @@
+uwsgi==2.0.8
+astropy
+Django
+mysqlclient
+numpy
+requests
