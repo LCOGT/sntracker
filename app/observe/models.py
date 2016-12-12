@@ -3,9 +3,6 @@ from __future__ import unicode_literals
 from django.db import models
 from datetime import datetime
 
-from astropy.time import Time
-
-
 STATUS_CHOICES = (
                 ('P','Pending'),
                 ('C','Completed'),
@@ -17,7 +14,6 @@ STATUS_CHOICES = (
 class Supernova(models.Model):
     name                = models.CharField('Designation',max_length=15, blank=True, null=True)
     filter_name         = models.CharField(max_length=10)
-    exposure_count      = models.IntegerField(default=1)
     start               = models.DateTimeField(blank=True, null=True)
     end                 = models.DateTimeField(blank=True, null=True)
     information         = models.TextField(blank=True, null=True)
@@ -33,17 +29,18 @@ class Supernova(models.Model):
     def __unicode__(self):
         return self.name
 
-class Filter(models.Model):
+class Exposure(models.Model):
     name                = models.CharField(max_length=30)
     repeats             = models.IntegerField(default=0)
     supernova           = models.ForeignKey(Supernova)
     aperture            = models.CharField(max_length=4)
+    exposure_time       = models.FloatField(default=0.0)
 
 class Observation(models.Model):
     track_num           = models.CharField(max_length=10)
     status              = models.CharField(max_length=1, choices=STATUS_CHOICES)
     last_update         = models.DateTimeField(blank=True, null=True)
-    email               = models.CharField(max_length=150, blank=True, null=True)
+    email               = models.CharField('Email address of the submitter', max_length=150, blank=True, null=True)
     supernova           = models.ForeignKey(Supernova)
     request_ids         = models.TextField(blank=True, null=True)
     frame_ids           = models.TextField(blank=True, null=True)

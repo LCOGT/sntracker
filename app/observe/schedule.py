@@ -3,7 +3,7 @@ import logging
 import json
 from django.conf import settings
 
-from observe.models import Asteroid
+from observe.models import Supernova
 
 logger = logging.getLogger('supernova')
 
@@ -38,54 +38,50 @@ def get_headers(url):
     headers = {'Authorization': 'Token {}'.format(token)}
     return headers
 
-def format_request(asteroid):
+def format_request(supernova):
 
     # this selects any telescope on the 1 meter network
     location = {
-        'telescope_class' : asteroid.aperture,
+        'telescope_class' : filters[0].aperture,
         }
 
-    molecule = {
-      # Required fields
-    'exposure_time'   : asteroid.exposure,  # Exposure time, in secs
-    'exposure_count'  : asteroid.exposure_count,  # The number of consecutive exposures
-    'filter'          : asteroid.filter_name,  # The generic filter name
-    # Optional fields. Defaults are as below.
-    # fill_window should be defined as True on a maximum of one molecule per request, or you should receive an error when scheduling
-    'fill_window'     : False, # set to True to cause this molecule to fill its window (or all windows of a cadence) with exposures, calculating exposure_count for you
-    'type'            : 'EXPOSE',  # The type of the molecule
-    'ag_name'         : '',  # '' to let it resolve; same as instrument_name for self-guiding
-    'ag_mode'         : 'Optional',
-    'instrument_name' : asteroid.instrument,  # This resolves to the main science camera on the scheduled resource
-    'bin_x'           : asteroid.binning,  # Your binning choice. Right now these need to be the same.
-    'bin_y'           : asteroid.binning,
-    'defocus'         : 0.0  # Mechanism movement of M2, or how much focal plane has moved (mm)
-    }
+    molecules = []
+    for f in filters:
+        molecule = {
+          # Required fields
+        'exposure_time'   : f.exposure,  # Exposure time, in secs
+        'exposure_count'  : f.repeats,  # The number of consecutive exposures
+        'filter'          : f.filter_name,  # The generic filter name
+        # Optional fields. Defaults are as below.
+        # fill_window should be defined as True on a maximum of one molecule per request, or you should receive an error when scheduling
+        'fill_window'     : False, # set to True to cause this molecule to fill its window (or all windows of a cadence) with exposures, calculating exposure_count for you
+        'type'            : 'EXPOSE',  # The type of the molecule
+        'ag_name'         : '',  # '' to let it resolve; same as instrument_name for self-guiding
+        'ag_mode'         : 'Optional',
+        'instrument_name' : supernova.instrument,  # This resolves to the main science camera on the scheduled resource
+        'bin_x'           : supernova.binning,  # Your binning choice. Right now these need to be the same.
+        'bin_y'           : supernova.binning,
+        'defocus'         : 0.0  # Mechanism movement of M2, or how much focal plane has moved (mm)
+        }
+        molecules.append(molecule)
 
     # define the target
     target = {
-        'name'              : asteroid.name,
-        'type'              : 'NON_SIDEREAL',
-        'scheme'            : 'MPC_MINOR_PLANET',
-        'orbinc'            : asteroid.orbinc,
-        'argofperih'        : asteroid.argofperih,
-        'longascnode'       : asteroid.longascnode,
-        'epochofel'         : asteroid.epochofel_mjd(),
-        'eccentricity'      : asteroid.eccentricity,
-        'meananom'          : asteroid.meananom,
-        'meandist'          : asteroid.meandist,
+        'name'              : supernova.name,
+        'type'              : 'SIDEREAL',
+
     }
 
     # this is the actual window
     window = {
-          'start' : str(asteroid.start),
-          'end' : str(asteroid.end)
+          'start' : str(supernova.start),
+          'end' : str(supernova.end)
     }
 
     request = {
     "constraints" : {'max_airmass' : 2.0},
     "location" : location,
-    "molecules" : [molecule],
+    "molecules" : molecules,
     "observation_note" : "",
     "observation_type" : "NORMAL",
     "target" : target,
@@ -97,6 +93,6 @@ def format_request(asteroid):
     "operator" : "single",
     "requests" : [request],
     "type" : "compound_request",
-    # "group_id" : "Asteroid_Day_2016_%s" % asteroid.name
+    # "group_id" : "Supernova_Tracker_%s" % supernova.name
     }
     return json.dumps(user_request)

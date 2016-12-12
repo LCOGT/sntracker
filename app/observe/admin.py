@@ -4,7 +4,7 @@ from django.contrib.flatpages.models import FlatPage
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
 
-from observe.models import Asteroid, Observation
+from observe.models import Supernova, Observation
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):
     fieldsets = (
@@ -24,7 +24,7 @@ class FlatPageAdmin(FlatPageAdmin):
         return super(FlatPageAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 class ObservationAdmin(admin.ModelAdmin):
-    list_display = ['track_num','email','asteroid','status']
+    list_display = ['track_num','email','supernova','status']
     list_filter = ['status']
 
 # Re-register FlatPageAdmin
@@ -32,5 +32,5 @@ admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
 
 
-admin.site.register(Asteroid)
+admin.site.register(Supernova)
 admin.site.register(Observation, ObservationAdmin)

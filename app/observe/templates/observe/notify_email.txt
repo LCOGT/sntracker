@@ -1,12 +1,12 @@
 Success!
 
-Your request for an observation of asteroid {{observation.asteroid.name}} took place on {{observation.last_update}}.
+Your request for an observation of supernova {{observation.supernova.name}} took place on {{observation.last_update}}.
 
-To view your images and the updated timelapse of the asteroid moving through space, visit:
+To view your images and the updated timelapse of the supernova moving through space, visit:
 
-http://asteroidday.lcogt.net{% url 'request_detail' observation.id %}
+http://supernovatracker.lco.global{% url 'request_detail' observation.id %}
 
-Thanks for being involved with this Asteroid Day campaign, brought to you by Las Cumbres Observatory.
+Thanks for being involved with Supernova Tracker, brought to you by Las Cumbres Observatory.
 
 - Education team, Las Cumbres Observatory
-http://lcogt.net/
+http://lco.global/

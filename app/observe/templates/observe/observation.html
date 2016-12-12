@@ -7,21 +7,21 @@
   <div class="col-md-2">
   </div>
   <div class="col-md-6">
-    <h1>{{observation.asteroid.name}}</h1>
+    <h1>{{observation.supernova.name}}</h1>
 
-  {% if observation.asteroid.num_observations > 0 %}
+  {% if observation.supernova.num_observations > 0 %}
   <video width="100%" controls>
-     <source src="{{observation.asteroid.timelapse_url}}" type="video/mp4" >
-  Your browser does not support the video tag. Try <a href="observation.asteroid.timelapse_url">downloading</a> instead.
+     <source src="{{observation.supernova.timelapse_url}}" type="video/mp4" >
+  Your browser does not support the video tag. Try <a href="observation.supernova.timelapse_url">downloading</a> instead.
   </video>
-  <p class="caption">Timelapse of observations requested by citizen scientists. Made from {{observation.asteroid.num_observations}} images, last updated {{observation.asteroid.last_update}}</p>
+  <p class="caption">Timelapse of observations requested by citizen scientists. Made from {{observation.supernova.num_observations}} images, last updated {{observation.supernova.last_update}}</p>
   {% else %}
   <p class="lead">
     <i class="glyphicon glyphicon-time big-icon"></i><br/>
     Currently waiting for observations to complete.</p>
 {% endif %}
 <h3>Information</h3>
-<p>{{observation.asteroid.information|safe}}</p>
+<p>{{observation.supernova.information|safe}}</p>
 </div>
 <div class="col-md-4">
     <h3>Your Observations</h3>

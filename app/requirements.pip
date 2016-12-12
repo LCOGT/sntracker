@@ -1,6 +1,4 @@
-uwsgi==2.0.8
-astropy
+#uwsgi==2.0.8
 Django
 mysqlclient
-numpy
 requests
