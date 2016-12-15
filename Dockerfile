@@ -3,10 +3,10 @@
 # Runs the LCOGT Asteroid Day app using nginx + uwsgi
 #
 # Build with
-# docker build -t docker.lcogt.net/asteroidday:latest .
+# docker build -t docker.lcogt.net/sntracker:latest .
 #
 # Push to docker registry with
-# docker push docker.lcogt.net/asteroidday:latest
+# docker push docker.lcogt.net/sntracker:latest
 #
 ################################################################################
 FROM centos:centos7
@@ -15,10 +15,6 @@ MAINTAINER LCOGT <webmaster@lcogt.net>
 # nginx (http protocol) runs on port 80
 EXPOSE 80
 ENTRYPOINT [ "/init" ]
-
-# Setup the Python Django environment
-ENV PYTHONPATH /var/www/apps
-ENV DJANGO_SETTINGS_MODULE asteroidday.settings
 
 # Install package repositories
 RUN yum -y install epel-release \
@@ -29,14 +25,14 @@ RUN yum -y install epel-release \
   && yum -y install ImageMagick \
 	&& yum -y update
 
-# Copy the LCOGT Asteroid Day requirements file
-COPY app/requirements.pip /var/www/apps/asteroidday/requirements.pip
+# Copy the LCO Supernova Tracker requirements file
+COPY app/requirements.pip /var/www/apps/sntracker/requirements.pip
 
-RUN pip install -r /var/www/apps/asteroidday/requirements.pip
+RUN pip install -r /var/www/apps/sntracker/requirements.pip
 
 # Setup the Python Django environment
 ENV PYTHONPATH /var/www/apps
-ENV DJANGO_SETTINGS_MODULE asteroidday.settings
+ENV DJANGO_SETTINGS_MODULE supernova.settings
 
 # Ensure crond will run on all host operating systems
 RUN sed -i -e 's/\(session\s*required\s*pam_loginuid.so\)/#\1/' /etc/pam.d/crond
@@ -50,5 +46,5 @@ COPY config/crontab.root /var/spool/cron/root
 # Copy configuration files
 COPY config/init /init
 
-# Copy the LCOGT Asteroid Day files
-COPY app /var/www/apps/asteroidday
+# Copy the LCO Supernova Tracker files
+COPY app /var/www/apps/sntracker

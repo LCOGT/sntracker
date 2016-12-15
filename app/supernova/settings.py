@@ -46,7 +46,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'observe.apps.ObserveConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'observe.apps.ObserveConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -142,7 +142,7 @@ EMAIL_HOST          = 'smtp.gmail.com'
 EMAIL_HOST_USER     = os.environ.get('SUPERNOVA_EMAIL_USERNAME','')
 EMAIL_HOST_PASSWORD = os.environ.get('SUPERNOVA_EMAIL_PASSWORD','')
 EMAIL_PORT          =  587
-DEFAULT_FROM_EMAIL  = 'Asteroid Day <streams-admin@lco.global>'
+DEFAULT_FROM_EMAIL  = 'Supernova Tracker <streams-admin@lco.global>'
 
 LOGGING = {
     'version': 1,
@@ -165,7 +165,7 @@ LOGGING = {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': 'asteroid.log',
+            'filename': 'supernova.log',
             'formatter': 'verbose',
             'filters': ['require_debug_false']
         },
@@ -181,7 +181,7 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'asteroid': {
+        'supernova': {
             'handlers':['console','file'],
             'level' : 'DEBUG'
         }

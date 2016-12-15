@@ -1,20 +1,20 @@
 
 html, body{
   height:100%;
-  background:#556574 url('../images/supernova_bg_sq.jpg') no-repeat 0 100%;
+  background:#D9EEFD url('../images/supernova_bg_green_sq.jpg') no-repeat 0 100%;
   color:#7c6e64;
 }
 
 @media (max-width: 768px) {
   html, body{
     height:100%;
-    background:#faf6eb no-repeat 0 0;
+    background:#D9EEFD no-repeat 0 0;
   }
 }
 
 h1, h2, h3, h4, h5 {
   text-align: center;
-  color: #dd5f32;;
+  color: #1A6DA9;;
 }
 
 .big-icon {
@@ -22,9 +22,10 @@ h1, h2, h3, h4, h5 {
     font-size: 75px;
 }
 
-.masthead {color:#dd5f32;}
+.masthead {color:#1A6DA9;}
 
-.topbar {background:#eaede8 none repeat scroll 0 0;}
+.topbar {background:#1A6DA9 none repeat scroll 0 0;}
+.topbar a {color:#bcd5d1;}
 
 footer { padding-top:50px;text-align: center;}
 
@@ -97,7 +98,7 @@ footer { padding-top:50px;text-align: center;}
  }
 
  .panel.panel-image .panel-icon .icon {
-     background-color: #dd5f32;
+     background-color: #1A6DA9;
      border: 10px solid white;
      color: white;
      display: inline-block;
@@ -138,7 +139,7 @@ footer { padding-top:50px;text-align: center;}
  }
 
  .panel.panel-image .panel-body {
-     background-color: #eaede8;
+     background-color: #bcd5d1;
      border: 2px solid #eaedf2;
      padding-top: 5px;
      border-top: none;

@@ -5,11 +5,14 @@
 
             <h1 class="masthead">Supernova Tracker</h1>
             <p class="lead">
+              Follow these exploding stars, in distant galaxies and help scientists at Las Cumbres Observatory.
+            </p>
+            <p>Click one the objects below to trigger telescope observations.</p>
             <div class="panels-wrapper">
               <div class="row panels">
                 {% for object in objects %}
-                <div class="col-sm-6 panel-item">
-                  <a href="{% url 'asteroid_detail' pk=object.id %}" class="panel panel-image">
+                <div class="col-sm-4 panel-item">
+                  <a href="{% url 'supernova_detail' pk=object.id %}" class="panel panel-image">
                     <div class="panel-icon">
                       <i class="fa fa-cog icon"></i>
                     </div>

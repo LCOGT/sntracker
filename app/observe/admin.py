@@ -4,7 +4,7 @@ from django.contrib.flatpages.models import FlatPage
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import Site
 
-from observe.models import Supernova, Observation
+from observe.models import Supernova, Observation, Exposure
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):
     fieldsets = (
@@ -23,6 +23,14 @@ class FlatPageAdmin(FlatPageAdmin):
             kwargs["initial"] = [Site.objects.get_current()]
         return super(FlatPageAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
+class ExposureInline(admin.TabularInline):
+    model = Exposure
+
+class SupernovaAdmin(admin.ModelAdmin):
+    inlines = [
+        ExposureInline,
+    ]
+
 class ObservationAdmin(admin.ModelAdmin):
     list_display = ['track_num','email','supernova','status']
     list_filter = ['status']
@@ -32,5 +40,5 @@ admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
 
 
-admin.site.register(Supernova)
+admin.site.register(Supernova, SupernovaAdmin)
 admin.site.register(Observation, ObservationAdmin)

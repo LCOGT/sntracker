@@ -21,7 +21,7 @@ state_options = {'PENDING' : 'P', 'COMPLETED' :'C', 'CANCELED':'N', 'FAILED':'F'
 
 def home(request):
     sne = Supernova.objects.all().order_by('-end')
-    return render(request, 'observe/home.html', {'sne':sne})
+    return render(request, 'observe/home.html', {'objects':sne})
 
 class EmailForm(forms.Form):
     user_name = forms.CharField()
