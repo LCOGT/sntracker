@@ -22,12 +22,13 @@ SITE_ID = 1
 
 DATABASES = {
     'default': {
-        'NAME': os.environ.get('SUPERNOVA_DB_NAME', ''),
-        "USER": os.environ.get('SUPERNOVA_DB_USER', ''),
-        "PASSWORD": os.environ.get('SUPERNOVA_DB_PASSWD', ''),
-        "HOST": os.environ.get('SUPERNOVA_DB_HOST', ''),
-        "OPTIONS": {'init_command': 'SET storage_engine=INNODB'} if PRODUCTION else {},
         "ENGINE": "django.db.backends.mysql",
+        'NAME': os.environ.get('SNTRACKER_DB_NAME', ''),
+        "USER": os.environ.get('SNTRACKER_DB_USER', ''),
+        "PASSWORD": os.environ.get('SNTRACKER_DB_PASSWD', ''),
+        "HOST": os.environ.get('SNTRACKER_DB_HOST', ''),
+        "OPTIONS": {'init_command': 'SET default_storage_engine=INNODB'} if PRODUCTION else {},
+        "PORT" : 3306,
         }
     }
 
@@ -129,18 +130,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'observe'),]
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = '/var/www/apps/supernova/observe/media/'
-
-PROPOSAL_USER = os.environ.get('SUPERNOVA_API_USER', '')
-PROPOSAL_PASSWD = os.environ.get('SUPERNOVA_API_PASSWD', '')
+MEDIA_ROOT = '/var/www/apps/sntracker/observe/media/'
 
 FFMPEG = '/bin/ffmpeg'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS       = True
 EMAIL_HOST          = 'smtp.gmail.com'
-EMAIL_HOST_USER     = os.environ.get('SUPERNOVA_EMAIL_USERNAME','')
-EMAIL_HOST_PASSWORD = os.environ.get('SUPERNOVA_EMAIL_PASSWORD','')
+EMAIL_HOST_USER     = os.environ.get('SNTRACKER_EMAIL_USERNAME','')
+EMAIL_HOST_PASSWORD = os.environ.get('SNTRACKER_EMAIL_PASSWORD','')
 EMAIL_PORT          =  587
 DEFAULT_FROM_EMAIL  = 'Supernova Tracker <streams-admin@lco.global>'
 

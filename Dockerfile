@@ -3,14 +3,14 @@
 # Runs the LCOGT Asteroid Day app using nginx + uwsgi
 #
 # Build with
-# docker build -t docker.lcogt.net/sntracker:latest .
+# docker build -t docker.lco.global/sntracker:dev .
 #
 # Push to docker registry with
-# docker push docker.lcogt.net/sntracker:latest
+# docker push docker.lco.global/sntracker:dev
 #
 ################################################################################
 FROM centos:centos7
-MAINTAINER LCOGT <webmaster@lcogt.net>
+MAINTAINER Edward Gomez <egomez@lco.global>
 
 # nginx (http protocol) runs on port 80
 EXPOSE 80

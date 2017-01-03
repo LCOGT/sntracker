@@ -5,22 +5,23 @@ cat > /var/www/apps/asteroidday/cronwrapper << EOF
 export PYTHONPATH="${PYTHONPATH}"
 export DJANGO_SETTINGS_MODULE="${DJANGO_SETTINGS_MODULE}"
 
-export SUPERNOVA_DB_NAME="${SUPERNOVA_DB_NAME}"
-export SUPERNOVA_DB_HOST="${SUPERNOVA_DB_HOST}"
-export SUPERNOVA_DB_USER="${SUPERNOVA_DB_USER}"
-export SUPERNOVA_DB_PASSWD="${SUPERNOVA_DB_PASSWD}"
-export SUPERNOVA_API_USER="${SUPERNOVA_API_USER}"
-export SUPERNOVA_API_PASSWD="${SUPERNOVA_API_PASSWD}"
-export SUPERNOVA_EMAIL_USERNAME="${SUPERNOVA_EMAIL_USERNAME}"
-export SUPERNOVA_EMAIL_PASSWORD="${SUPERNOVA_EMAIL_PASSWORD}"
+export SNTRACKER_DB_NAME="${SNTRACKER_DB_NAME}"
+export SNTRACKER_DB_HOST="${SNTRACKER_DB_HOST}"
+export SNTRACKER_DB_USER="${SNTRACKER_DB_USER}"
+export SNTRACKER_DB_PASSWD="${SNTRACKER_DB_PASSWD}"
+export SNTRACKER_API_USER="${SNTRACKER_API_USER}"
+export SNTRACKER_API_PASSWD="${SNTRACKER_API_PASSWD}"
+export SNTRACKER_EMAIL_USERNAME="${SNTRACKER_EMAIL_USERNAME}"
+export SNTRACKER_EMAIL_PASSWORD="${SNTRACKER_EMAIL_PASSWORD}"
 
 EOF
 
 # Make cron wrapper executable
 chmod +x /var/www/apps/sntracker/cronwrapper
 
-# Setup the LCOGT Asteroid day webapp
+# Setup the LCO Supernova Tracker webapp
 python /var/www/apps/sntracker/manage.py migrate --noinput
+# python /var/www/apps/sntracker/manage.py supernovae/fixtures/loaddata initial_data.json
 python /var/www/apps/sntracker/manage.py collectstatic --noinput
 
 # Run under supervisord
