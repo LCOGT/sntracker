@@ -9,7 +9,7 @@ class Command(BaseCommand):
     help = 'Update pending blocks if observation requests have been made'
 
     def handle(self, *args, **options):
-        self.stdout.write("==== Updating Supernovae %s  ====" % (datetime.now().strftime('%Y-%m-%d %H:%M')))
+        self.stdout.write("==== Updating Targets %s  ====" % (datetime.now().strftime('%Y-%m-%d %H:%M')))
         for ast in Supernova.objects.filter(active=True):
             num_images = 10
             frames, last_update = find_frames_object(ast)

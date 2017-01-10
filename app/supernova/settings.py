@@ -190,6 +190,10 @@ API_URL = 'https://lco.global/observe/api/user_requests/'
 ARCHIVE_TOKEN_API = 'https://archive-api.lco.global/api-token-auth/'
 OBSERVE_TOKEN_API = 'https://lco.global/observe/api/api-token-auth/'
 
+PROPOSAL_USER = os.environ.get('PROPOSAL_USER','')
+PROPOSAL_PASSWD = os.environ.get('PROPOSAL_PASSWD','')
+PROPOSAL_CODE = os.environ.get('PROPOSAL_CODE','')
+
 if not CURRENT_PATH.startswith('/var/www'):
     try:
         from local_settings import *

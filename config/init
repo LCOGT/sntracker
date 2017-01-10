@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Generate cron wrapper to set correct environment variables
-cat > /var/www/apps/asteroidday/cronwrapper << EOF
+cat > /var/www/apps/sntracker/cronwrapper << EOF
 export PYTHONPATH="${PYTHONPATH}"
 export DJANGO_SETTINGS_MODULE="${DJANGO_SETTINGS_MODULE}"
 

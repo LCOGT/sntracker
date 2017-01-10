@@ -4,7 +4,7 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from observe.views import update_status
 from observe.images import email_users
-from observe.models import Observation, Asteroid
+from observe.models import Observation
 
 class Command(BaseCommand):
     help = 'Update pending blocks if observation requests have been made'

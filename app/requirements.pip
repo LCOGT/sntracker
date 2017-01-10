@@ -1,4 +1,3 @@
-uwsgi==2.0.8
 Django
-mysqlclient
+MySQL-python
 requests

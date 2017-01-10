@@ -1,2 +1,2 @@
-*/30 * * * * source /var/www/apps/sntracker/cronwrapper; python /var/www/apps/sntracker/manage.py update_asteroids >> /cron_debug.log
+*/30 * * * * source /var/www/apps/sntracker/cronwrapper; python /var/www/apps/sntracker/manage.py update_targets >> /cron_debug.log
 */30 * * * * source /var/www/apps/sntracker/cronwrapper; python /var/www/apps/sntracker/manage.py update_requests >> /cron_debug.log
