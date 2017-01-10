@@ -4,3 +4,4 @@
 *.pyc
 .DS_Store
 local_settings.py
+app/observe/media/

@@ -180,7 +180,7 @@ LOGGING = {
             'propagate': False,
         },
         'supernova': {
-            'handlers':['console','file'],
+            'handlers':['console'],
             'level' : 'DEBUG'
         }
     }

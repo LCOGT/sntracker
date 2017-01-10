@@ -52,7 +52,7 @@ class Supernova(models.Model):
     end                 = models.DateTimeField(blank=True, null=True)
     information         = models.TextField(blank=True, null=True)
     teaser              = models.CharField(max_length=120)
-    image               = models.CharField(max_length=50, default="no-image.jpg")
+    image               = models.FileField(upload_to='teaser')
     timelapse_url       = models.URLField(blank=True, null=True)
     num_observations    = models.IntegerField(default=0,blank=True, null=True)
     last_update         = models.DateTimeField(blank=True, null=True)

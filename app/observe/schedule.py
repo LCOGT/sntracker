@@ -19,7 +19,7 @@ def submit_scheduler_api(params):
     r = client.post(url, data={'username':settings.PROPOSAL_USER,'password':settings.PROPOSAL_PASSWD, 'csrfmiddlewaretoken' : token}, cookies={'csrftoken':token})
     url = 'https://lco.global/observe/service/request/submit'
 
-    user_request = {'proposal': 'LCOEPO2014B-010', 'request_data':params}
+    user_request = {'proposal': settings.PROPOSAL_CODE, 'request_data':params}
     r = client.post(url, data=user_request, cookies=client.cookies)
     client.close()
     if r.status_code == 200:

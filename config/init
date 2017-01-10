@@ -13,11 +13,15 @@ export SNTRACKER_API_USER="${SNTRACKER_API_USER}"
 export SNTRACKER_API_PASSWD="${SNTRACKER_API_PASSWD}"
 export SNTRACKER_EMAIL_USERNAME="${SNTRACKER_EMAIL_USERNAME}"
 export SNTRACKER_EMAIL_PASSWORD="${SNTRACKER_EMAIL_PASSWORD}"
+export PROPOSAL_USER="${PROPOSAL_USER}"
+export PROPOSAL_PASSWD="${PROPOSAL_PASSWD}"
+export PROPOSAL_CODE="${PROPOSAL_CODE}"
 
 EOF
 
 # Make cron wrapper executable
 chmod +x /var/www/apps/sntracker/cronwrapper
+chmod 777 /var/www/apps/sntracker/*.log
 
 # Setup the LCO Supernova Tracker webapp
 python /var/www/apps/sntracker/manage.py migrate --noinput
