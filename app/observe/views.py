@@ -106,6 +106,7 @@ def send_request(supernova, form):
             'status'    : 'P',
             'email'     : form['user_name'],
             'supernova'  : supernova,
+            'last_updated' : datetime.now()
         }
         r = Observation(**req_params)
         r.save()

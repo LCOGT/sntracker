@@ -43,7 +43,7 @@ def find_frames_object(supernova):
     frames = []
     frame_urls = []
     last_update = supernova.last_update.strftime("%Y-%m-%d %H:%M")
-    archive_headers = get_headers(url = settings.ARCHIVE_URL)
+    archive_headers = get_headers(url = settings.ARCHIVE_TOKEN_URL)
     url = 'http://archive-api.lcogt.net/frames/?RLEVEL=0&start={}&OBJECT={}'.format(last_update, supernova.name)
     response = requests.get(url, headers=archive_headers).json()
     frames = response['results']
