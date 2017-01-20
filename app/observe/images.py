@@ -44,7 +44,7 @@ def find_frames_object(supernova):
     frame_urls = []
     last_update = supernova.last_update.strftime("%Y-%m-%d %H:%M")
     archive_headers = get_headers(url = settings.ARCHIVE_TOKEN_URL)
-    url = 'http://archive-api.lcogt.net/frames/?RLEVEL=0&start={}&OBJECT={}'.format(last_update, supernova.name)
+    url = '{}frames/?RLEVEL=0&start={}&OBJECT={}'.format(settings.ARCHIVE_URL, last_update, supernova.name)
     response = requests.get(url, headers=archive_headers).json()
     frames = response['results']
     logger.debug("Found {} frames".format(len(frames)))
@@ -54,7 +54,7 @@ def find_frames_object(supernova):
     for frame in frames:
         logger.debug("Looking for frame {}".format(frame['id']))
         last_update, date_obs = set_update_time(frame['DATE_OBS'], supernova.last_update)
-        thumbnail_url = "https://thumbnails.lcogt.net/{}/?width=1000&height=1000&label={}".format(frame['id'], date_obs.strftime("%d %b %Y %H:%M"))
+        thumbnail_url = "{}{}/?width=1000&height=1000&label={}".format(settings.THUMBNAIL_URL, frame['id'], date_obs.strftime("%d %b %Y %H:%M"))
         try:
             resp = requests.get(thumbnail_url, headers=archive_headers)
             frame_urls.append({'id':str(frame['id']), 'url':resp.json()['url'],'date_obs':date_obs})
@@ -71,7 +71,7 @@ def find_frames(user_reqs, headers=None):
     frames = []
     logger.debug("User request: %s" % user_reqs)
     for req in user_reqs:
-        url = 'http://archive-api.lcogt.net/frames/?RLEVEL=0&REQNUM={}'.format(req)
+        url = '{}frames/?RLEVEL=0&REQNUM={}'.format(settings.ARCHIVE_URL,req)
         resp = requests.get(url, headers=headers).json()
         if resp['count'] > 0:
             frames += [f['id'] for f in resp['results']]
@@ -81,7 +81,7 @@ def find_frames(user_reqs, headers=None):
 def get_thumbnails(frames, headers=None):
     frame_urls = []
     for frame_id in frames:
-        thumbnail_url = "https://thumbnails.lcogt.net/%s/?width=1000&height=1000" % frame_id['id']
+        thumbnail_url = "{}{}/?width=1000&height=1000".format(settings.THUMBNAIL_URL,frame_id['id'])
         try:
             resp = requests.get(thumbnail_url, headers=headers)
             frame_urls.append({'id':str(frame_id), 'url':resp.json()['url']})
@@ -130,7 +130,7 @@ def email_users(observation_list):
         t = loader.get_template('observe/notify_email.txt')
         text_body = t.render(c)
 
-        email_params = ('Supernova Tracker: Update on your supernova', text_body, settings.email_address, [observation.email])
+        email_params = ('Supernova Tracker: Update on your supernova', text_body, settings.DEFAULT_FROM_EMAIL, [observation.email])
         email_list.append(email_params)
     send_mass_mail(tuple(email_list))
     return

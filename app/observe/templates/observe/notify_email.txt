@@ -2,11 +2,11 @@ Success!
 
 Your request for an observation of supernova {{observation.supernova.name}} took place on {{observation.last_update}}.
 
-To view your images and the updated timelapse of the supernova moving through space, visit:
+To view your images and the updated timelapse of the supernova's brightness changing, visit:
 
 http://supernovatracker.lco.global{% url 'request_detail' observation.id %}
 
 Thanks for being involved with Supernova Tracker, brought to you by Las Cumbres Observatory.
 
-- Education team, Las Cumbres Observatory
+- Education and Supernova teams, Las Cumbres Observatory
 http://lco.global/

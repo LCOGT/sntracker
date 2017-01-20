@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib import messages
@@ -12,7 +13,7 @@ import json
 
 from observe.schedule import format_request, submit_scheduler_api, get_headers
 from observe.images import check_request_api, download_frames, find_frames, get_thumbnails
-from observe.models import Supernova, Observation
+from observe.models import Supernova, Observation, Exposure
 import logging
 
 logger = logging.getLogger('supernova')
@@ -90,7 +91,8 @@ def update_status(req):
         archive_headers = get_headers(url = 'https://archive-api.lcogt.net/api-token-auth/')
         frames = find_frames(json.loads(req.request_ids), archive_headers)
         req.frame_ids = json.dumps(frames)
-        if len(frames) == req.supernova.exposure_count:
+        num_exp = Exposure.objects.filter(supernova=req.supernova).aggregate(Sum('repeats'))
+        if len(frames) == num_exp['repeats__sum']:
             req.status = 'C'
             req.update = datetime.utcnow()
             req.save()
