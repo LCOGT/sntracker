@@ -88,6 +88,7 @@ def format_request(supernova):
     "operator" : "single",
     "requests" : [request],
     "type" : "compound_request",
+    "ipp_value" : 1.0,
     # "group_id" : "Supernova_Tracker_%s" % supernova.name
     }
     return json.dumps(user_request)

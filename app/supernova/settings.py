@@ -22,13 +22,12 @@ SITE_ID = 1
 
 DATABASES = {
     'default': {
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "django.db.backends.postgresql",
         'NAME': os.environ.get('SNTRACKER_DB_NAME', ''),
         "USER": os.environ.get('SNTRACKER_DB_USER', ''),
         "PASSWORD": os.environ.get('SNTRACKER_DB_PASSWD', ''),
         "HOST": os.environ.get('SNTRACKER_DB_HOST', ''),
-        "OPTIONS": {'init_command': 'SET default_storage_engine=INNODB'} if PRODUCTION else {},
-        "PORT" : 3306,
+        "PORT" : "5432",
         }
     }
 
@@ -127,7 +126,7 @@ USE_TZ = False
 
 STATIC_ROOT = '/var/www/html/static/'
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'observe'),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'observe','static'),]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = '/var/www/apps/sntracker/observe/media/'
@@ -191,6 +190,7 @@ API_URL = 'https://lco.global/observe/api/user_requests/'
 TOKEN_API = 'api-token-auth/'
 THUMBNAIL_URL = 'https://thumbnails.lco.global/'
 ARCHIVE_URL = 'https://archive-api.lco.global/'
+ARCHIVE_TOKEN_API = os.path.join(ARCHIVE_URL, TOKEN_API)
 
 PROPOSAL_USER = os.environ.get('PROPOSAL_USER','')
 PROPOSAL_PASSWD = os.environ.get('PROPOSAL_PASSWD','')

@@ -19,7 +19,7 @@ ENTRYPOINT [ "/init" ]
 # Install package repositories
 RUN yum -y install epel-release \
     && yum -y install http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm \
-    && yum -y install cronie ffmpeg ImageMagick MySQL-python nginx python-pip supervisor uwsgi-plugin-python \
+    && yum -y install cronie ffmpeg ImageMagick postgresql-devel nginx python-pip python-psycopg2 supervisor uwsgi-plugin-python \
     && yum -y update \
     && yum -y clean all
 
