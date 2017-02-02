@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'observe.apps.ObserveConfig',
+    'pagedown',
+    'markdown_deux',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -123,6 +125,7 @@ USE_L10N = True
 
 USE_TZ = False
 
+PAGEDOWN_SHOW_PREVIEW = True
 
 STATIC_ROOT = '/var/www/html/static/'
 STATIC_URL = '/static/'

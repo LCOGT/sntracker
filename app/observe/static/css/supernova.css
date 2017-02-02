@@ -1,8 +1,11 @@
 
 html, body{
   height:100%;
-  background:#D9EEFD url('../images/supernova_bg_green_sq.jpg') no-repeat 0 100%;
   color:#7c6e64;
+}
+
+body{
+  background:#D9EEFD url('../images/supernova_bg_green_sq.jpg') no-repeat bottom left fixed;
 }
 
 @media (max-width: 768px) {
@@ -14,7 +17,13 @@ html, body{
 
 h1, h2, h3, h4, h5 {
   text-align: center;
-  color: #1A6DA9;;
+  color: #1A6DA9;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.5em;
+  margin: 0 0 30px;
 }
 
 .big-icon {

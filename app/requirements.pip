@@ -1,3 +1,5 @@
 Django
 requests
 psycopg2
+django-pagedown
+django-markdown-deux

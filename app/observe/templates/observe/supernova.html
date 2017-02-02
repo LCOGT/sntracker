@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load markdown_deux_tags %}
 
 {% block main %}
 
@@ -7,9 +8,19 @@
   {% if supernova.active %}<h3>Track this Supernova!</h3>{% endif %}
 </div>
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-4">
+      <!-- Default panel contents -->
+      <div class="panel-heading">Information</div>
+      <table class="table">
+        <tr>
+          <td>R.A.</td><td>{{supernova.ra}}</td>
+        </tr>
+        <tr>
+          <td>Dec.</td><td>{{supernova.dec}}</td>
+        </tr>
+      </table>
   </div>
-  <div class="col-md-10">
+  <div class="col-md-8">
     {% if supernova.active %}
     <p>Enter your email address and Las Cumbres Observatory will schedule observations of {{supernova.name}} just for you!</p>
     <form action="{% url 'supernova_schedule' supernova.id %}" method="post">
@@ -42,7 +53,7 @@
     Currently waiting for observations to complete.</p>{% endif %}
 
     <h3>Information</h3>
-    <p>{{supernova.information|safe}}</p>
+    <p>{{supernova.information|markdown}}</p>
   </div>
 
 </div>
