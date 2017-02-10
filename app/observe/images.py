@@ -19,7 +19,8 @@ def check_request_api(tracking_num, headers=None):
     tracking_num: Finds all frames corresponding to this tracking number for UserRequest
     '''
     # Make an authenticated request with our headers
-    url = os.path.join(settings.API_URL, tracking_num)
+    headers = get_headers('O')
+    url = '{}user_requests/{}/'.format(settings.OBSERVE_URL,tracking_num)
     response = requests.get(url, headers=headers)
     frames = []
     if response.status_code == 200:
@@ -43,8 +44,8 @@ def find_frames_object(supernova):
     frames = []
     frame_urls = []
     last_update = supernova.last_update.strftime("%Y-%m-%d %H:%M")
-    archive_headers = get_headers(url = settings.ARCHIVE_TOKEN_URL)
-    url = '{}frames/?RLEVEL=0&start={}&OBJECT={}'.format(settings.ARCHIVE_URL, last_update, supernova.name)
+    archive_headers = get_headers('A')
+    url = '{}frames/?RLEVEL=11&start={}&OBJECT={}'.format(settings.ARCHIVE_URL, last_update, supernova.name)
     response = requests.get(url, headers=archive_headers).json()
     frames = response['results']
     logger.debug("Found {} frames".format(len(frames)))
@@ -63,38 +64,48 @@ def find_frames_object(supernova):
     logger.debug("Total frames=%s" % (len(frames)))
     return frame_urls, last_update
 
-def find_frames(user_reqs, headers=None):
+def find_frames(user_reqs):
     '''
     user_reqs: Full User Request dict, or list of dictionaries, containing individual observation requests
     header: provide auth token from the request API so we don't need to get it twice
     '''
     frames = []
     logger.debug("User request: %s" % user_reqs)
+    headers = get_headers('A')
     for req in user_reqs:
-        url = '{}frames/?RLEVEL=0&REQNUM={}'.format(settings.ARCHIVE_URL,req)
+        url = '{}frames/?RLEVEL=11&REQNUM={}'.format(settings.ARCHIVE_URL, req)
         resp = requests.get(url, headers=headers).json()
+        if resp.get('detail',''):
+            logger.error("Connection problem: {}".format(resp['detail']))
+            continue
         if resp['count'] > 0:
             frames += [f['id'] for f in resp['results']]
     logger.debug('Frames %s' % len(frames))
     return frames
 
-def get_thumbnails(frames, headers=None):
+def get_thumbnails(frames):
+    headers = get_headers(mode='A')
     frame_urls = []
     for frame_id in frames:
-        thumbnail_url = "{}{}/?width=1000&height=1000".format(settings.THUMBNAIL_URL,frame_id['id'])
+        thumbnail_url = "{}{}/?width=1000&height=1000".format(settings.THUMBNAIL_URL, frame_id['id'])
         try:
             resp = requests.get(thumbnail_url, headers=headers)
             frame_urls.append({'id':str(frame_id), 'url':resp.json()['url']})
         except ValueError:
-            logger.debug("Failed to get thumbnail URL for %s - %s" % (frame_id, resp.status_code))
+            logger.debug("Failed to get thumbnail URL for %s - %s" % (frame_id, resp.content))
     logger.debug("Total frames=%s calibrated=%s" % (len(frames), len(frame_urls)))
     return frame_urls
 
 def download_frames(supernova_name, frames, download_dir):
+    current_files = glob.glob(download_dir+"*.jpg")
     for frame in frames:
         frame_date = frame['date_obs'].strftime("%Y%m%d%H%M%S")
         file_name = '%s_%s.jpg' % (supernova_name, frame_date)
-        with open(os.path.join(download_dir, file_name), "wb") as f:
+        full_filename = os.path.join(download_dir, file_name)
+        if full_filename in current_files:
+            logger.debug("Frame {} already present".format(file_name))
+            continue
+        with open(full_filename, "wb") as f:
             logger.debug("Downloading %s" % file_name)
             response = requests.get(frame['url'], stream=True)
             logger.debug(frame['url'])
@@ -133,4 +144,5 @@ def email_users(observation_list):
         email_params = ('Supernova Tracker: Update on your supernova', text_body, settings.DEFAULT_FROM_EMAIL, [observation.email])
         email_list.append(email_params)
     send_mass_mail(tuple(email_list))
+    logger.debug('Emailed {} people'.format(len(observation_list)))
     return

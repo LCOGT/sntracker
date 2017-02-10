@@ -43,7 +43,7 @@ class SupernovaAdmin(admin.ModelAdmin):
 
 class ObservationAdmin(admin.ModelAdmin):
     list_display = ['track_num','email','supernova','status']
-    list_filter = ['status']
+    list_filter = ['status','supernova']
 
 # Re-register FlatPageAdmin
 admin.site.unregister(FlatPage)
@@ -52,3 +52,6 @@ admin.site.register(FlatPage, FlatPageAdmin)
 
 admin.site.register(Supernova, SupernovaAdmin)
 admin.site.register(Observation, ObservationAdmin)
+
+admin.site.site_header = 'Supernova Tracker admin'
+admin.site.site_title = 'Supernova Tracker admin'

@@ -79,8 +79,9 @@ class SupernovaSchedule(FormView):
 def update_status(req):
     if not req.request_ids:
         logger.debug("Finding request IDs for {}".format(req))
-        headers = get_headers(url = settings.OBSERVE_TOKEN_API)
-        status = check_request_api(req.track_num, headers)
+        status = check_request_api(req.track_num)
+        if not status:
+            return False
         logger.debug(status['requests'][0]['windows'][0]['end'])
         req.status = state_options.get(status['state'],'U')
         request_ids = [r['request_number'] for r in status['requests']]
@@ -88,11 +89,10 @@ def update_status(req):
         req.save()
     if not req.frame_ids:
         logger.debug("Finding frame IDs for {}".format(req))
-        archive_headers = get_headers(url = 'https://archive-api.lcogt.net/api-token-auth/')
-        frames = find_frames(json.loads(req.request_ids), archive_headers)
+        frames = find_frames(json.loads(req.request_ids))
         req.frame_ids = json.dumps(frames)
-        num_exp = Exposure.objects.filter(supernova=req.supernova).aggregate(Sum('repeats'))
-        if len(frames) == num_exp['repeats__sum']:
+        logger.debug(frames)
+        if len(frames) == req.supernova.exposure_count:
             req.status = 'C'
             req.update = datetime.utcnow()
             req.save()

@@ -4,7 +4,7 @@ Your request for an observation of supernova {{observation.supernova.name}} took
 
 To view your images and the updated timelapse of the supernova's brightness changing, visit:
 
-http://supernovatracker.lco.global{% url 'request_detail' observation.id %}
+https://supernovatracker.lco.global{% url 'request_detail' observation.id %}
 
 Thanks for being involved with Supernova Tracker, brought to you by Las Cumbres Observatory.
 

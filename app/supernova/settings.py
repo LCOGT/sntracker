@@ -132,8 +132,26 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'observe','static'),]
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = '/var/www/apps/sntracker/observe/media/'
+MEDIA_ROOT = '/var/www/html/media/'
 
+OBSERVE_URL = 'https://lco.global/observe/api/'
+API_URL = 'https://lco.global/observe/api/user_requests/'
+TOKEN_API = 'api-token-auth/'
+THUMBNAIL_URL = 'https://thumbnails.lco.global/'
+ARCHIVE_URL = 'https://archive-api.lco.global/'
+SCHEDULE_API_URL = 'https://lco.global/observe/service/request/submit'
+CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID','')
+CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET','')
+
+OBSERVE_TOKEN_URL = 'https://lco.global/observe/o/token/'
+ARCHIVE_TOKEN_URL = "{}{}".format(ARCHIVE_URL, TOKEN_API)
+
+ARCHIVE_TOKEN = os.environ.get('ARCHIVE_TOKEN','')
+ODIN_TOKEN = os.environ.get('ODIN_TOKEN','')
+
+PROPOSAL_USER = os.environ.get('PROPOSAL_USER','')
+PROPOSAL_PASSWD = os.environ.get('PROPOSAL_PASSWD','')
+PROPOSAL_CODE = os.environ.get('PROPOSAL_CODE','')
 FFMPEG = '/bin/ffmpeg'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -176,8 +194,8 @@ LOGGING = {
         }
     },
     'loggers': {
-            'django': {
-            'handlers': ['file'],
+        'django': {
+            'handlers': ['console'],
             'level': 'ERROR',
             'propagate': False,
         },

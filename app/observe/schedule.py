@@ -11,32 +11,51 @@ def submit_scheduler_api(params):
     '''
     Send the observation parameters and the authentication cookie to the Scheduler API
     '''
-    client = requests.session()
-
-    url = 'https://lco.global/observe/auth/accounts/login/'
-    r = requests.get(url)
-    token = r.cookies['csrftoken']
-    r = client.post(url, data={'username':settings.PROPOSAL_USER,'password':settings.PROPOSAL_PASSWD, 'csrfmiddlewaretoken' : token}, cookies={'csrftoken':token})
-    url = 'https://lco.global/observe/service/request/submit'
-
-    user_request = {'proposal': settings.PROPOSAL_CODE, 'request_data':params}
-    r = client.post(url, data=user_request, cookies=client.cookies)
-    client.close()
+    headers = get_headers(mode='O')
+    url = settings.SCHEDULE_API_URL
+    request_data = {'request_data':json.dumps(params),'proposal':settings.PROPOSAL_CODE}
+    r = requests.post(url, data=request_data, headers=headers)
     if r.status_code == 200:
         tracking_num = r.json()['id']
         logger.debug('Request submitted - %s' % tracking_num)
         return True, tracking_num
     else:
-        logger.error(r.content)
+        logger.error("Could not send request: {}".format(r.content))
         return False, r.content
 
-def get_headers(url):
+def get_headers(mode='O'):
+    if mode == 'A':
+        token = settings.ARCHIVE_TOKEN
+        headers = {'Authorization': 'Token {}'.format(token)}
+    elif mode == 'O':
+        token = odin_headers()
+        headers = {'Authorization': 'Bearer {}'.format(token)}
+    return headers
+
+def odin_headers():
+        auth_data={
+            'grant_type': 'password',
+            'username': settings.PROPOSAL_USER,
+            'password': settings.PROPOSAL_PASSWD,
+            'client_id': settings.CLIENT_ID,
+            'client_secret': settings.CLIENT_SECRET
+        }
+        response = requests.post(settings.OBSERVE_TOKEN_URL, data= auth_data)
+        if response.status_code == 200:
+            return response.json()['access_token']
+        else:
+            return False
+
+def archive_headers(url):
     auth_data = {'username':settings.PROPOSAL_USER, 'password':settings.PROPOSAL_PASSWD}
-    response = requests.post(url, data = auth_data).json()
+    response = requests.post(settings.ARCHIVE_TOKEN_URL, data = auth_data)
+    if response.status_code == 200:
+        response = response.json()
+    else:
+        return False
     token = response.get('token')
     # Store the Authorization header
-    headers = {'Authorization': 'Token {}'.format(token)}
-    return headers
+    return True
 
 def format_request(supernova):
 
@@ -91,4 +110,4 @@ def format_request(supernova):
     "ipp_value" : 1.0,
     # "group_id" : "Supernova_Tracker_%s" % supernova.name
     }
-    return json.dumps(user_request)
+    return user_request

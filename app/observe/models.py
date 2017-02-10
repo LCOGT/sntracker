@@ -18,7 +18,7 @@ SCOPE_CHOICES = (
                 )
 
 INSTRUMENT_CHOICES = (
-("1M0-SCICAM-SBIG", '1m Science Camera'), ("1M0-SCICAM-SINISTRO", 'Sinistro'), ('2M0-SCICAM-SPECTRAL', 'Spectral'), ('2M0-SCICAM-MEROPE', 'Merope')
+("04M-SCICAM-SBIG", '0.4m Science Camera'), ("1M0-SCICAM-SINISTRO", 'Sinistro'), ('2M0-SCICAM-SPECTRAL', 'Spectral'), ('2M0-SCICAM-MEROPE', 'Merope')
 )
 
 FILTER_CHOICES = (
