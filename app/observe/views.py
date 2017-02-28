@@ -92,7 +92,8 @@ def update_status(req):
         frames = find_frames(json.loads(req.request_ids))
         req.frame_ids = json.dumps(frames)
         logger.debug(frames)
-        if len(frames) == req.supernova.exposure_count:
+        counts = Exposure.objects.filter(supernova=req.supernova).aggregate(total=Sum('repeats'))
+        if len(frames) == counts:
             req.status = 'C'
             req.update = datetime.utcnow()
             req.save()
