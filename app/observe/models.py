@@ -59,6 +59,7 @@ class Supernova(models.Model):
     active              = models.BooleanField(default=True)
     ra                  = models.FloatField(default=0.0)
     dec                 = models.FloatField(default=0.0)
+    repeat_interval     = models.FloatField(help_text='window from today that the request will be posted', default=14.0)
 
     def text_name(self):
         return self.name.replace(" ","_")

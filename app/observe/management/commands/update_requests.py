@@ -4,14 +4,25 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from observe.views import update_status
 from observe.images import email_users
-from observe.models import Observation
+from observe.models import Observation, Supernova
 
 class Command(BaseCommand):
     help = 'Update pending blocks if observation requests have been made'
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--tracknum',
+            dest='tracknum',
+            default=False,
+            help='Tracking num to update',
+        )
+
     def handle(self, *args, **options):
         updated_reqs = []
-        requests = Observation.objects.filter(~Q(status='C'), ~Q(status='F'))
+        active_targets = Supernova.objects.filter(active=True)
+        requests = Observation.objects.filter(~Q(status='C'), ~Q(status='F'), asteroid__in=active_targets)
+        if options['tracknum']:
+            requests = requests.filter(track_num=options['tracknum'])
         self.stdout.write("==== %s Pending requests %s ====" % (requests.count(), datetime.now().strftime('%Y-%m-%d %H:%M')))
         for req in requests:
             self.stdout.write("Updating {}".format(req))

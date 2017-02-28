@@ -129,7 +129,7 @@ def make_timelapse(supernova):
     files = glob.glob(path)
     if len(files) > 0 and len(files) > supernova.num_observations:
         outfile = '%s%s.mp4' % (settings.MEDIA_ROOT, supernova.text_name())
-        video_options = "ffmpeg -framerate 25 -pattern_type glob -i '{}' -vf 'scale=2*iw:-1, crop=iw/2:ih/2' -s 696x520 -vcodec libx264 -pix_fmt yuv420p {} -y".format(path, outfile)
+        video_options = "ffmpeg -framerate 10 -pattern_type glob -i '{}' -vf 'scale=2*iw:-1, crop=iw/2:ih/2' -s 696x520 -vcodec libx264 -pix_fmt yuv420p {} -y".format(path, outfile)
         subprocess.call(video_options, shell=True)
     return len(files)
 

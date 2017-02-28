@@ -127,6 +127,15 @@ USE_TZ = False
 
 PAGEDOWN_SHOW_PREVIEW = True
 
+MARKDOWN_DEUX_STYLES = {
+    "default": {
+        "extras": {
+            "code-friendly": None,
+        },
+        "safe_mode": False,
+    },
+}
+
 STATIC_ROOT = '/var/www/html/static/'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'observe','static'),]

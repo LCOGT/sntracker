@@ -1,6 +1,7 @@
 import requests
 import logging
 import json
+from datetime import timedelta, datetime
 from django.conf import settings
 
 from observe.models import Supernova, Exposure
@@ -16,7 +17,10 @@ def submit_scheduler_api(params):
     request_data = {'request_data':json.dumps(params),'proposal':settings.PROPOSAL_CODE}
     r = requests.post(url, data=request_data, headers=headers)
     if r.status_code == 200:
-        tracking_num = r.json()['id']
+        rjson = r.json()
+        if rjson.get('error',''):
+            logger.error('Submission problem - {}'.format(rjson.get('error','')))
+        tracking_num = rjson['id']
         logger.debug('Request submitted - %s' % tracking_num)
         return True, tracking_num
     else:
@@ -87,9 +91,10 @@ def format_request(supernova):
     }
 
     # this is the actual window
+    end = datetime.utcnow() + timedelta(days=supernova.repeat_interval)
     window = {
-          'start' : str(supernova.start),
-          'end' : str(supernova.end)
+          'start' : str(datetime.utcnow()),
+          'end' : str(end)
     }
 
     request = {
