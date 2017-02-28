@@ -143,6 +143,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'observe','static'),]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = '/var/www/html/media/'
 
+
 OBSERVE_URL = 'https://lco.global/observe/api/'
 API_URL = 'https://lco.global/observe/api/user_requests/'
 TOKEN_API = 'api-token-auth/'
@@ -154,6 +155,7 @@ CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET','')
 
 OBSERVE_TOKEN_URL = 'https://lco.global/observe/o/token/'
 ARCHIVE_TOKEN_URL = "{}{}".format(ARCHIVE_URL, TOKEN_API)
+ARCHIVE_TOKEN_API = os.path.join(ARCHIVE_URL, TOKEN_API)
 
 ARCHIVE_TOKEN = os.environ.get('ARCHIVE_TOKEN','')
 ODIN_TOKEN = os.environ.get('ODIN_TOKEN','')
@@ -214,17 +216,6 @@ LOGGING = {
         }
     }
 }
-
-OBSERVE_URL = 'https://lco.global/observe/'
-API_URL = 'https://lco.global/observe/api/user_requests/'
-TOKEN_API = 'api-token-auth/'
-THUMBNAIL_URL = 'https://thumbnails.lco.global/'
-ARCHIVE_URL = 'https://archive-api.lco.global/'
-ARCHIVE_TOKEN_API = os.path.join(ARCHIVE_URL, TOKEN_API)
-
-PROPOSAL_USER = os.environ.get('PROPOSAL_USER','')
-PROPOSAL_PASSWD = os.environ.get('PROPOSAL_PASSWD','')
-PROPOSAL_CODE = os.environ.get('PROPOSAL_CODE','')
 
 if not CURRENT_PATH.startswith('/var/www'):
     try:

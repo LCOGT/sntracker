@@ -20,7 +20,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         updated_reqs = []
         active_targets = Supernova.objects.filter(active=True)
-        requests = Observation.objects.filter(~Q(status='C'), ~Q(status='F'), asteroid__in=active_targets)
+        requests = Observation.objects.filter(~Q(status='C'), ~Q(status='F'), supernova__in=active_targets)
         if options['tracknum']:
             requests = requests.filter(track_num=options['tracknum'])
         self.stdout.write("==== %s Pending requests %s ====" % (requests.count(), datetime.now().strftime('%Y-%m-%d %H:%M')))
