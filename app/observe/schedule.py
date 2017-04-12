@@ -20,6 +20,7 @@ def submit_scheduler_api(params):
         rjson = r.json()
         if rjson.get('error',''):
             logger.error('Submission problem - {}'.format(rjson.get('error','')))
+            return False, rjson['error']
         tracking_num = rjson['id']
         logger.debug('Request submitted - %s' % tracking_num)
         return True, tracking_num
@@ -90,8 +91,11 @@ def format_request(supernova):
         'dec'               : supernova.dec,
     }
 
-    # this is the actual window
+    # this is the actual window unless it is after the campaign finishes
     end = datetime.utcnow() + timedelta(days=supernova.repeat_interval)
+    if end >= supernova.end:
+        end = supernova.end
+
     window = {
           'start' : str(datetime.utcnow()),
           'end' : str(end)

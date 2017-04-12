@@ -40,7 +40,7 @@ class ObservationView(DetailView):
         # Add in a QuerySet of all the books
         fids = self.object.frame_ids
         if fids:
-            headers = get_headers(url = settings.ARCHIVE_TOKEN_API)
+            headers = get_headers('A')
             frame_ids = [{'id':f} for f in json.loads(fids)]
             context['frames'] = get_thumbnails(frame_ids, headers)
         return context
@@ -93,7 +93,7 @@ def update_status(req):
         req.frame_ids = json.dumps(frames)
         logger.debug(frames)
         counts = Exposure.objects.filter(supernova=req.supernova).aggregate(total=Sum('repeats'))
-        if len(frames) == counts:
+        if len(frames) == counts['total']:
             req.status = 'C'
             req.update = datetime.utcnow()
             req.save()

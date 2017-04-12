@@ -47,6 +47,7 @@ def find_frames_object(supernova):
     archive_headers = get_headers('A')
     url = '{}frames/?RLEVEL=11&start={}&OBJECT={}'.format(settings.ARCHIVE_URL, last_update, supernova.name)
     response = requests.get(url, headers=archive_headers).json()
+    print(response)
     frames = response['results']
     logger.debug("Found {} frames".format(len(frames)))
     if not response:
@@ -73,7 +74,7 @@ def find_frames(user_reqs):
     logger.debug("User request: %s" % user_reqs)
     headers = get_headers('A')
     for req in user_reqs:
-        url = '{}frames/?RLEVEL=11&REQNUM={}'.format(settings.ARCHIVE_URL, req)
+        url = '{}frames/?RLEVEL=91&REQNUM={}'.format(settings.ARCHIVE_URL, req)
         resp = requests.get(url, headers=headers).json()
         if resp.get('detail',''):
             logger.error("Connection problem: {}".format(resp['detail']))
@@ -126,11 +127,13 @@ def download_frames(supernova_name, frames, download_dir):
 def make_timelapse(supernova):
     logger.debug('Making timelapse for %s' % supernova)
     path = "%s%s_*.jpg" % (settings.MEDIA_ROOT,supernova.text_name())
+    outfile = '%s%s.mp4' % (settings.MEDIA_ROOT, supernova.text_name())
     files = glob.glob(path)
-    if len(files) > 0 and len(files) > supernova.num_observations:
-        outfile = '%s%s.mp4' % (settings.MEDIA_ROOT, supernova.text_name())
-        video_options = "ffmpeg -framerate 10 -pattern_type glob -i '{}' -vf 'scale=2*iw:-1, crop=iw/2:ih/2' -s 696x520 -vcodec libx264 -pix_fmt yuv420p {} -y".format(path, outfile)
-        subprocess.call(video_options, shell=True)
+    video_file = glob.glob(outfile)
+    if len(files) > 0:
+        if len(video_file)==0 or len(files) > supernova.num_observations:
+            video_options = "ffmpeg -framerate 10 -pattern_type glob -i '{}' -vf 'scale=2*iw:-1, crop=iw/2:ih/2' -s 696x520 -vcodec libx264 -pix_fmt yuv420p {} -y".format(path, outfile)
+            subprocess.call(video_options, shell=True)
     return len(files)
 
 def email_users(observation_list):

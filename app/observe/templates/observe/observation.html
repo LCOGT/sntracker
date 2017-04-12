@@ -10,10 +10,12 @@
     <h1>{{observation.supernova.name}}</h1>
 
   {% if observation.supernova.num_observations > 0 %}
-  <video width="100%" controls>
-     <source src="{{observation.supernova.timelapse_url}}" type="video/mp4" >
-  Your browser does not support the video tag. Try <a href="observation.supernova.timelapse_url">downloading</a> instead.
-  </video>
+  <video id="sn-video" class="video-js" controls preload="auto" width="640" height="264" poster="{{supernova.image.url}}" data-setup="{}">
+  <source src="{{observation.supernova.timelapse_url}}" type='video/mp4'>
+  <p class="vjs-no-js">
+    Your browser does not support the video tag. Try <a href="{{observation.supernova.timelapse_url}}">downloading</a> instead.
+  </p>
+</video>
   <p class="caption">Timelapse of observations requested by citizen scientists. Made from {{observation.supernova.num_observations}} images, last updated {{observation.supernova.last_update}}</p>
   {% else %}
   <p class="lead">
