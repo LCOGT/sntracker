@@ -40,9 +40,8 @@ class ObservationView(DetailView):
         # Add in a QuerySet of all the books
         fids = self.object.frame_ids
         if fids:
-            headers = get_headers('A')
             frame_ids = [{'id':f} for f in json.loads(fids)]
-            context['frames'] = get_thumbnails(frame_ids, headers)
+            context['frames'] = get_thumbnails(frame_ids)
         return context
 
 class SupernovaView(DetailView):
