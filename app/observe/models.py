@@ -70,7 +70,7 @@ class Supernova(models.Model):
 class Exposure(models.Model):
     filter_name         = models.CharField(max_length=30, choices=FILTER_CHOICES)
     repeats             = models.IntegerField(default=0)
-    supernova           = models.ForeignKey(Supernova)
+    supernova           = models.ForeignKey(Supernova, on_delete=models.CASCADE)
     aperture            = models.CharField(max_length=4, choices=SCOPE_CHOICES)
     instrument          = models.CharField(max_length=20, choices=INSTRUMENT_CHOICES)
     exposure_time       = models.FloatField(default=0.0)
@@ -80,7 +80,7 @@ class Observation(models.Model):
     status              = models.CharField(max_length=1, choices=STATUS_CHOICES)
     last_update         = models.DateTimeField(blank=True, null=True)
     email               = models.CharField('Email address of the submitter', max_length=150, blank=True, null=True)
-    supernova           = models.ForeignKey(Supernova)
+    supernova           = models.ForeignKey(Supernova, on_delete=models.CASCADE)
     request_ids         = models.TextField(blank=True, null=True)
     frame_ids           = models.TextField(blank=True, null=True)
 
