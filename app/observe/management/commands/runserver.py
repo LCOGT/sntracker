@@ -26,18 +26,17 @@ def banner():
 |_   _| __ __ _  ___| | _____ _ __
   | || '__/ _` |/ __| |/ / _ \ '__|
   | || | | (_| | (__|   <  __/ |
-  |_||_|  \__,_|\___|_|\_\___|_|   
+  |_||_|  \__,_|\___|_|\_\___|_|
+
 * Django %(django_version)s
 * Python %(python_version)s
 * %(os_name)s %(os_version)s
-* AsteroidDay %(astday_version)s
 
 """ % {
         "django_version": django.get_version(),
         "python_version": sys.version.split(" ", 1)[0],
         "os_name": platform.system(),
         "os_version": platform.release(),
-        "astday_version" : settings.VERSION,
     }).splitlines()
 
     return "\n".join(lines)

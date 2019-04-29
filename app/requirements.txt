@@ -3,3 +3,4 @@ requests
 psycopg2
 django-pagedown
 django-markdown-deux
+gunicorn[gevent]==19.9.0

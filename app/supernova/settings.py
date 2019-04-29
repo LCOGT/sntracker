@@ -1,7 +1,6 @@
-import os, sys
-from django.utils.crypto import get_random_string
-
-VERSION = '0.1'
+import ast
+import sys
+import os
 
 TEST = 'test' in sys.argv
 COMPRESS_ENABLED = True
@@ -12,21 +11,16 @@ ADMINS = (
 
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 
-PRODUCTION = True if CURRENT_PATH.startswith('/var/www') else False
-DEBUG = False
-
-HOME = os.environ.get('HOME','/tmp')
-
 MANAGERS = ADMINS
 SITE_ID = 1
 
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
-        'NAME': os.environ.get('SNTRACKER_DB_NAME', ''),
-        "USER": os.environ.get('SNTRACKER_DB_USER', ''),
-        "PASSWORD": os.environ.get('SNTRACKER_DB_PASSWD', ''),
-        "HOST": os.environ.get('SNTRACKER_DB_HOST', ''),
+        'NAME': os.environ.get('DB_NAME', ''),
+        "USER": os.environ.get('DB_USER', ''),
+        "PASSWORD": os.environ.get('DB_PASS', ''),
+        "HOST": os.environ.get('DB_HOST', ''),
         "PORT" : "5432",
         }
     }
@@ -34,12 +28,13 @@ DATABASES = {
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
-SECRET_KEY = get_random_string(50, chars)
+SECRET_KEY = os.environ.get('SECRET_KEY', None)
+if not SECRET_KEY:
+    print('ERROR: You must specify the Django secret key!')
+    sys.exit(1)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = ast.literal_eval(os.environ.get('DEBUG', 'False'))
 
 ALLOWED_HOSTS = ['*']
 
@@ -136,13 +131,12 @@ MARKDOWN_DEUX_STYLES = {
     },
 }
 
-STATIC_ROOT = '/var/www/html/static/'
+STATIC_ROOT = '/static/'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'observe','static'),]
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = '/var/www/html/media/'
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/media/'
 
 OBSERVE_URL = 'https://lco.global/observe/api/'
 API_URL = 'https://lco.global/observe/api/user_requests/'
@@ -161,15 +155,15 @@ ARCHIVE_TOKEN = os.environ.get('ARCHIVE_TOKEN','')
 ODIN_TOKEN = os.environ.get('ODIN_TOKEN','')
 
 PROPOSAL_USER = os.environ.get('PROPOSAL_USER','')
-PROPOSAL_PASSWD = os.environ.get('PROPOSAL_PASSWD','')
+PROPOSAL_PASS = os.environ.get('PROPOSAL_PASS','')
 PROPOSAL_CODE = os.environ.get('PROPOSAL_CODE','')
 FFMPEG = '/bin/ffmpeg'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS       = True
 EMAIL_HOST          = 'smtp.gmail.com'
-EMAIL_HOST_USER     = os.environ.get('SNTRACKER_EMAIL_USERNAME','')
-EMAIL_HOST_PASSWORD = os.environ.get('SNTRACKER_EMAIL_PASSWORD','')
+EMAIL_HOST_USER     = os.environ.get('EMAIL_USER','')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS','')
 EMAIL_PORT          =  587
 DEFAULT_FROM_EMAIL  = 'Supernova Tracker <streams-admin@lco.global>'
 
@@ -188,21 +182,14 @@ LOGGING = {
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
-        }
+        },
     },
     'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': 'supernova.log',
-            'formatter': 'verbose',
-            'filters': ['require_debug_false']
-        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
-        }
+        },
     },
     'loggers': {
         'django': {
@@ -211,15 +198,8 @@ LOGGING = {
             'propagate': False,
         },
         'supernova': {
-            'handlers':['console'],
-            'level' : 'DEBUG'
-        }
-    }
+            'handlers': ['console'],
+            'level': 'DEBUG'
+        },
+    },
 }
-
-if not CURRENT_PATH.startswith('/var/www'):
-    try:
-        from local_settings import *
-    except ImportError as e:
-        if "local_settings" not in str(e):
-            raise e

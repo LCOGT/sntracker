@@ -41,7 +41,7 @@ def odin_headers():
         auth_data={
             'grant_type': 'password',
             'username': settings.PROPOSAL_USER,
-            'password': settings.PROPOSAL_PASSWD,
+            'password': settings.PROPOSAL_PASS,
             'client_id': settings.CLIENT_ID,
             'client_secret': settings.CLIENT_SECRET
         }
@@ -52,7 +52,7 @@ def odin_headers():
             return False
 
 def archive_headers(url):
-    auth_data = {'username':settings.PROPOSAL_USER, 'password':settings.PROPOSAL_PASSWD}
+    auth_data = {'username':settings.PROPOSAL_USER, 'password':settings.PROPOSAL_PASS}
     response = requests.post(settings.ARCHIVE_TOKEN_URL, data = auth_data)
     if response.status_code == 200:
         response = response.json()
